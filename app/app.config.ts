@@ -1,12 +1,12 @@
 export default defineAppConfig({
   site: {
-    name: 'My Awesome Site',
-    description: 'Where I post all my awesome stuff!',
-    url: 'https://www.example.com/',
+    name: 'I18n Demo',
+    description: '',
+    url: 'https://i18n.demo.thombruce.com/',
     og: {
       component: 'TntColor',
-      website: 'www.example.com',
-      color: '#000000',
+      website: 'i18n.demo.thombruce.com',
+      color: '#00a6f4',
       // image: null, // NOTE: Removed as broken. / TODO: Investigate
     },
   },
@@ -15,7 +15,7 @@ export default defineAppConfig({
     theme: 'solid',
     pattern: false,
     colors: {
-      primary: 'green',
+      primary: 'sky',
       secondary: 'blue',
       success: 'green',
       info: 'blue',

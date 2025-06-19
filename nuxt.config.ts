@@ -10,9 +10,9 @@ export default defineNuxtConfig({
     static: true
   },
   site: {
-    name: 'My Awesome Site',
-    description: 'Where I post all my awesome stuff!',
-    url: 'https://example.com/',
+    name: 'I18n Demo',
+    description: '',
+    url: 'https://i18n.demo.thombruce.com/',
   },
   routeRules: {
     /* Custom route rules */
@@ -88,7 +88,7 @@ export default defineNuxtConfig({
     }
   },
   i18n: {
-    strategy: 'no_prefix',
+    strategy: 'prefix',
     defaultLocale: 'en',
     locales: [
       { code: 'en', name: 'English', file: 'en.json' },
