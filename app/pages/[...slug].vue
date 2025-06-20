@@ -2,18 +2,62 @@
 import type { LayoutKey } from '#build/types/layouts'
 import type { PageCollections } from '@nuxt/content'
 
+// @i18n
+
+const { locale, defaultLocale } = useI18n()
+
 const route = useRoute()
 
 const { public: { collections } } = useRuntimeConfig()
 
-const { ui: { theme, layout: defaultLayout, pattern: backgroundPattern } } = useAppConfig()
+const { content: { i18n: contentI18n }, ui: { theme, layout: defaultLayout, pattern: backgroundPattern } } = useAppConfig()
 
-const collection = collections.includes(route.params.slug?.[0] as keyof PageCollections)
-  ? route.params.slug?.[0] as keyof PageCollections
-  : 'pages'
+let collection = collections.includes(((contentI18n ? `${locale.value}_` : '') + route.params.slug?.[0]) as keyof PageCollections)
+  ? ((contentI18n ? `${locale.value}_` : '') + route.params.slug?.[0]) as keyof PageCollections
+  : ((contentI18n ? `${locale.value}_` : '') + 'pages') as keyof PageCollections
 
 // NOTE: useAsyncData removed
-const page = await queryCollection(collection).path(route.path).first()
+let page = await queryCollection(collection).path(route.path).first()
+
+// Fallback
+if (contentI18n && !page) {
+  collection = collections.includes(`${defaultLocale}_${route.params.slug?.[0]}` as keyof PageCollections)
+    ? `${defaultLocale}_${route.params.slug?.[0]}` as keyof PageCollections
+    : `${defaultLocale}_pages` as keyof PageCollections
+
+    let split = route.path.split('/')
+    split.splice(1, 1, defaultLocale)
+    const path = split.join('/')
+
+    page = await queryCollection(collection).path(path).first()
+}
+
+// TODO: For menus/search, discard dupes favouring chosen locale where present.
+// NOTE: prevnext won't really work properly where pages are missing; in that
+//       case, we should just show only pages for the chosen locale.
+
+// OKAY: But... Hang on... was the separate collection approach better?
+//       I don't think so, right? Surely it is better to discard... but...
+//       Something about ordering of content got me thinking... 'cause
+//       fallbacks are gonna be completely out of order, right? Like...
+//       en/about is gonna come before sv/index. And that's somewhat
+//       unresolvable... We can reorder using Nuxt Content .order chainable
+//       but that then requires us to order by some given field... and it
+//       1. might not have the desired result always
+//       2. might require us to think about adding a new field to be managed
+//       Simpler, actually, (at least from end-user POV) to...
+//       Basically to.... establish the ordering of links using the default
+//       locale, then query and match chosen locale files to the default
+//       locale items. This means we'll already have queried for the fallbacks.
+//       From a menus perspective then, I think this makes separate collections
+//       favourable. From a search one? Less sure.
+//       We do have to construct our search result collection anyway.. We can
+//       technically do that however we like. Does the multi-collection approach
+//       provide us more flexibility? I really think it does. We can limit search
+//       to same language (by targeting the collection), we can match items from
+//       another collection or list them separately...
+//       Yeah, I think I'm settled on the multi-collection approach.
+//       Dammit. I just undid that! Easily returned to previous. Done!
 
 // NOTE: useAsyncData removed
 const navItems = await tntNav(true, collection)
@@ -61,6 +105,7 @@ NuxtLayout(:name="layout" :theme="theme" :collection="collection")
             max-w-none"
     )/
 
+    //- TODO: Ensure that article list shows content from fallback locale
     TntArticleList(
       v-if="page?.list"
       :collection="typeof page.list === 'object' && page.list.collection ? page.list.collection : collection"

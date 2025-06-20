@@ -3,8 +3,10 @@ import type { PageCollections } from '@nuxt/content';
 
 const { path } = useRoute()
 
-const { collection = 'pages' } = defineProps<{
-  collection?: keyof PageCollections
+// @i18n
+
+const { collection } = defineProps<{
+  collection: keyof PageCollections
 }>()
 
 // NOTE: useAsyncData removed

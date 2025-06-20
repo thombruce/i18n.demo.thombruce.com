@@ -10,6 +10,10 @@ export default defineAppConfig({
       // image: null, // NOTE: Removed as broken. / TODO: Investigate
     },
   },
+  // @i18n
+  content: {
+    i18n: false,
+  },
   ui: {
     layout: 'default',
     theme: 'solid',

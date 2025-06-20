@@ -1,10 +1,14 @@
 <script lang="ts" setup>
-const { theme }: { theme?: 'solid' | 'ghost' } = useAttrs()
+import type { PageCollections } from '@nuxt/content';
+
+// @i18n
+
+const { theme, collection }: { theme?: 'solid' | 'ghost', collection?: keyof PageCollections } = useAttrs()
 </script>
 
 <template lang="pug">
 div(class="flex flex-col h-screen justify-between")
-  TntHeader(:variant="theme")/
+  TntHeader(:variant="theme" :collection="collection")/
 
   UContainer(class="mb-auto")
     div(class="grid grid-cols-10 gap-10")
@@ -20,5 +24,5 @@ div(class="flex flex-col h-screen justify-between")
       div(v-if="$slots.toc" class="col-span-2 hidden md:flex")
         slot(name="toc")
 
-  TntFooter(:variant="theme")/
+  TntFooter(:variant="theme" :collection="collection")/
 </template>

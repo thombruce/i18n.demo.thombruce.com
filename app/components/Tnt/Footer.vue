@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import type { PageCollections } from '@nuxt/content';
 import { tv } from 'tailwind-variants'
 
 const {
   ui: { pattern: backgroundPattern },
+  content: { i18n: contentI18n },
   footer: {
     about: footerAbout,
     copyright: footerCopyright,
@@ -14,16 +16,19 @@ const {
 const about = tntTranslate('footer.about', footerAbout)
 const copyright = tntTranslate('footer.copyright', footerCopyright)
 
-const { /* color = 'neutral', */ variant = undefined } = defineProps<{
+// @i18n
+
+const { /* color = 'neutral', */ variant = undefined, collection } = defineProps<{
   // color?: 'neutral' | 'primary'
   variant?: 'bordered' | 'solid' | 'ghost'
   // TODO: Size - it would be nice to allow larger text; given that this
   //       ought to be a fixed/sticky element though, we must give consideration
   //       to the space occupied when positioning other content.
+  collection?: keyof PageCollections
 }>()
 
 // NOTE: useAsyncData removed
-const navItems = await tntNav(navContent ? navContent : navLinks, undefined, { shallow: true })
+const navItems = await tntNav(navContent ? navContent : navLinks, collection, { shallow: true })
 
 const footer = computed(() => tv({
   base: 'w-full',
@@ -60,18 +65,22 @@ div(:class="footer({ variant })")
           span(class="text-xl font-semibold") About
           p(class="text-muted") {{ about }}
 
-        div(v-if="navItems" class="flex-grow basis-full md:basis-1/3 lg:basis-1/4 xl:basis-1/5")
-          span(class="text-xl font-semibold") Links
+        div(v-if="navItems || contentI18n" class="flex-grow basis-full md:basis-1/3 lg:basis-1/4 xl:basis-1/5")
+          //- TODO: Also make localeSelect conditional.
+          span(v-if="navItems" class="text-xl font-semibold") Links
           UNavigationMenu(
+            v-if="navItems"
             :items="navItems"
             :unmount-on-hide="false"
             orientation="vertical"
             variant="link"
             class="flex-1"
           )/
+          TntLocaleSelect(v-if="contentI18n")/
 
         div(v-if="tel || email || address" class="flex-grow basis-full md:basis-1/3 lg:basis-1/4 xl:basis-1/5")
           span(class="text-xl font-semibold") Contact
+          //- TODO: Refactor; should be one dl with multiple entries
           dl(v-if="tel")
             dt(class="font-bold") Tel
             dd

@@ -1,6 +1,11 @@
 import type { ContentNavigationItem, PageCollections } from "@nuxt/content"
 import type { NavigationMenuItem } from "@nuxt/ui"
 
+// @i18n
+
+// TODO: Should list pages for only one locale...
+//       Should show fallback pages where page does not exist in locale
+
 const mapContentNavToUI = (items: ContentNavigationItem[], opts?: { shallow?: boolean }): NavigationMenuItem[] => {
   return items.map(item => {
     return {

@@ -3,6 +3,12 @@ import type { PageCollections } from '@nuxt/content'
 
 import _startCase from 'lodash/startCase'
 
+// @i18n
+
+// TODO: Should ideally have preference for chosen locale.
+//       Should possibly exclude secondary locale, except
+//       where pages require fallbacks.
+
 // NOTE: We do not use tntTranslate here to avoid
 //       the unnecessary computation of startCase(collection)
 //       in such case that teh i18n key is defined.

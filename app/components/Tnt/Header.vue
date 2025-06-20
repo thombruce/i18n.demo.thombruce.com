@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { PageCollections } from '@nuxt/content';
 import { tv } from 'tailwind-variants'
 
 const {
@@ -8,16 +9,19 @@ const {
   },
 } = useAppConfig() as any
 
-const { /* color = 'neutral', */ variant = undefined } = defineProps<{
+// @i18n
+
+const { /* color = 'neutral', */ variant = undefined, collection } = defineProps<{
   // color?: 'neutral' | 'primary'
   variant?: 'bordered' | 'solid' | 'ghost'
   // TODO: Size - it would be nice to allow larger text; given that this
   //       ought to be a fixed/sticky element though, we must give consideration
   //       to the space occupied when positioning other content.
+  collection?: keyof PageCollections
 }>()
 
 // NOTE: useAsyncData removed
-const navItems = await tntNav(navContent ? navContent : navLinks)
+const navItems = await tntNav(navContent ? navContent : navLinks, collection)
 
 const navbar = computed(() => tv({
   base: 'w-full',
