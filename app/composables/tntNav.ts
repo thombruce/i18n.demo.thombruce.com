@@ -2,9 +2,11 @@ import type { ContentNavigationItem, PageCollections } from "@nuxt/content"
 import type { NavigationMenuItem } from "@nuxt/ui"
 
 // @i18n
-
 // TODO: Should list pages for only one locale...
-//       Should show fallback pages where page does not exist in locale
+//       Current state shows locale_code/ and any locale_code/collection as
+//       separate items. We need a way to exclude all i18n routes when not
+//       relevant, and include only them when in that locale.
+// TODO: Should still show pages for multiple collections (this is broken).
 
 const mapContentNavToUI = (items: ContentNavigationItem[], opts?: { shallow?: boolean }): NavigationMenuItem[] => {
   return items.map(item => {

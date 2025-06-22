@@ -76,7 +76,6 @@ div(:class="footer({ variant })")
             variant="link"
             class="flex-1"
           )/
-          TntLocaleSelect(v-if="contentI18n")/
 
         div(v-if="tel || email || address" class="flex-grow basis-full md:basis-1/3 lg:basis-1/4 xl:basis-1/5")
           span(class="text-xl font-semibold") Contact
