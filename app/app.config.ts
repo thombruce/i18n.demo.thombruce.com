@@ -12,7 +12,7 @@ export default defineAppConfig({
   },
   // @i18n
   content: {
-    i18n: false,
+    i18n: true,
   },
   ui: {
     layout: 'default',

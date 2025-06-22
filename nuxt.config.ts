@@ -16,11 +16,13 @@ export default defineNuxtConfig({
   },
   routeRules: {
     /* Custom route rules */
+    '/sv': { prerender: true, }
   },
   runtimeConfig: {
     public: {
       collections: [
         'pages',
+        'sv_pages',
       ],
       googleAnalytics: {
         // NUXT_PUBLIC_GOOGLE_ANALYTICS_ID=<your-id>
@@ -93,7 +95,7 @@ export default defineNuxtConfig({
     defaultLocale: 'en',
     locales: [
       { code: 'en', name: 'English', file: 'en.json' },
-      // { code: 'sv', name: 'Svenska', file: 'sv.json' },
+      { code: 'sv', name: 'Svenska', file: 'sv.json' },
     ]
   },
   // PATCH: https://github.com/nuxt/nuxt/issues/32175#issuecomment-2898200099

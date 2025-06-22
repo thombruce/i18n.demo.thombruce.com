@@ -5,6 +5,8 @@
   },
   "content": {
     "collections": {
+      "pages": "Engelska",
+      "sv_pages": "Svenska"
     }
   },
   "dateTime": {

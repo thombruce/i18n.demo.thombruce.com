@@ -9,7 +9,8 @@
   },
   "content": {
     "collections": {
-      "pages": "Pages"
+      "pages": "English",
+      "sv_pages": "Swedish"
     }
   },
   "dateTime": {

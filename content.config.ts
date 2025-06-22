@@ -12,6 +12,22 @@ export default defineContentConfig({
           exclude: [
             '.*',
             '.*/**/*',
+            'sv/**/*',
+          ]
+        },
+      ],
+      type: 'page',
+      schema: z.object({
+        ...global,
+      })
+    }),
+    sv_pages: defineCollection({
+      source: [
+        {
+          include: 'sv/**/*',
+          exclude: [
+            'sv/.*',
+            'sv/.*/**/*',
           ]
         },
       ],
