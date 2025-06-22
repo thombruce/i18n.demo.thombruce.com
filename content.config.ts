@@ -12,7 +12,23 @@ export default defineContentConfig({
           exclude: [
             '.*',
             '.*/**/*',
+            '*blog/**/*',
             'sv/**/*',
+          ]
+        },
+      ],
+      type: 'page',
+      schema: z.object({
+        ...global,
+      })
+    }),
+    blog: defineCollection({
+      source: [
+        {
+          include: '*blog/**/*',
+          exclude: [
+            '*blog/**/.*',
+            '*blog/**/.*/**/*',
           ]
         },
       ],
@@ -28,6 +44,22 @@ export default defineContentConfig({
           exclude: [
             'sv/.*',
             'sv/.*/**/*',
+            'sv/*blog/**/*',
+          ]
+        },
+      ],
+      type: 'page',
+      schema: z.object({
+        ...global,
+      })
+    }),
+    sv_blog: defineCollection({
+      source: [
+        {
+          include: 'sv/*blog/**/*',
+          exclude: [
+            'sv/*blog/**/.*',
+            'sv/*blog/**/.*/**/*',
           ]
         },
       ],

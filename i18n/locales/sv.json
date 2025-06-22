@@ -6,7 +6,9 @@
   "content": {
     "collections": {
       "pages": "Engelska",
-      "sv_pages": "Svenska"
+      "blog": "Blogg (Engelska)",
+      "sv_pages": "Svenska",
+      "sv_blog": "Blogg"
     }
   },
   "dateTime": {

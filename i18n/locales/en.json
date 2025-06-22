@@ -10,7 +10,8 @@
   "content": {
     "collections": {
       "pages": "English",
-      "sv_pages": "Swedish"
+      "sv_pages": "Swedish",
+      "sv_blog": "Blog (Swedish)"
     }
   },
   "dateTime": {

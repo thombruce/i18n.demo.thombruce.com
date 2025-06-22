@@ -22,7 +22,9 @@ export default defineNuxtConfig({
     public: {
       collections: [
         'pages',
+        'blog',
         'sv_pages',
+        'sv_blog',
       ],
       googleAnalytics: {
         // NUXT_PUBLIC_GOOGLE_ANALYTICS_ID=<your-id>
