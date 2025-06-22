@@ -2,11 +2,6 @@ import type { ContentNavigationItem, PageCollections } from "@nuxt/content"
 import type { NavigationMenuItem } from "@nuxt/ui"
 
 // @i18n
-// TODO: Should list pages for only one locale...
-//       Current state shows locale_code/ and any locale_code/collection as
-//       separate items. We need a way to exclude all i18n routes when not
-//       relevant, and include only them when in that locale.
-// TODO: Should still show pages for multiple collections (this is broken).
 
 const mapContentNavToUI = (items: ContentNavigationItem[], opts?: { shallow?: boolean }): NavigationMenuItem[] => {
   return items.map(item => {
@@ -22,14 +17,27 @@ const mapContentNavToUI = (items: ContentNavigationItem[], opts?: { shallow?: bo
   })
 }
 
-export const queryNav = async (collection?: keyof PageCollections, opts?: { shallow?: boolean }) => {
+export const queryNav = async (collection?: keyof PageCollections, opts?: { shallow?: boolean, locale?: string | boolean }) => {
   const nav = []
 
   if (collection) {
     const collectionNav = await queryCollectionNavigation(collection, ['icon', 'description'])
     nav.push(...mapContentNavToUI(collectionNav, { shallow: opts?.shallow }))
   } else for (const coll of useRuntimeConfig().public.collections as (keyof PageCollections)[]) {
-    const collectionNav = await queryCollectionNavigation(coll, ['icon', 'description'])
+    let collectionNav
+    if (opts?.locale && typeof opts?.locale === 'string') {
+      // TODO: Better mapping of international routes
+      collectionNav = await queryCollectionNavigation(coll, ['icon', 'description'])
+        .where('path', 'LIKE', `/${opts.locale}%`)
+    } else if (opts?.locale) {
+      collectionNav = await queryCollectionNavigation(coll, ['icon', 'description'])
+        .where('path', 'NOT LIKE', '/__')
+        .where('path', 'NOT LIKE', '/__/%')
+        .where('path', 'NOT LIKE', '/__-__')
+        .where('path', 'NOT LIKE', '/__-__/%')
+    } else {
+      collectionNav = await queryCollectionNavigation(coll, ['icon', 'description'])
+    }
     nav.push(...mapContentNavToUI(collectionNav, { shallow: opts?.shallow }))
   }
 
@@ -40,7 +48,11 @@ export const queryNav = async (collection?: keyof PageCollections, opts?: { shal
   })
 }
 
-export const tntNav = async (nav: NavigationMenuItem[] | boolean, collection?: keyof PageCollections, opts?: { shallow?: boolean }) => {
+export const tntNav = async (
+  nav: NavigationMenuItem[] | boolean,
+  collection?: keyof PageCollections,
+  opts?: { shallow?: boolean, locale?: string | boolean }
+) => {
   let navItems: NavigationMenuItem[]
 
   if (typeof nav === "boolean" && nav === true) {

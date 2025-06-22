@@ -13,12 +13,14 @@ const {
   },
 } = useAppConfig() as any
 
+const { locale, defaultLocale } = useI18n()
+
 const about = tntTranslate('footer.about', footerAbout)
 const copyright = tntTranslate('footer.copyright', footerCopyright)
 
 // @i18n
 
-const { /* color = 'neutral', */ variant = undefined, collection } = defineProps<{
+const { /* color = 'neutral', */ variant = undefined } = defineProps<{
   // color?: 'neutral' | 'primary'
   variant?: 'bordered' | 'solid' | 'ghost'
   // TODO: Size - it would be nice to allow larger text; given that this
@@ -28,7 +30,7 @@ const { /* color = 'neutral', */ variant = undefined, collection } = defineProps
 }>()
 
 // NOTE: useAsyncData removed
-const navItems = await tntNav(navContent ? navContent : navLinks, collection, { shallow: true })
+const navItems = await tntNav(navContent ? navContent : navLinks, undefined, { shallow: true , locale: contentI18n ? (locale.value === defaultLocale ? true : locale.value) : false })
 
 const footer = computed(() => tv({
   base: 'w-full',
@@ -65,9 +67,8 @@ div(:class="footer({ variant })")
           span(class="text-xl font-semibold") About
           p(class="text-muted") {{ about }}
 
-        div(v-if="navItems || contentI18n" class="flex-grow basis-full md:basis-1/3 lg:basis-1/4 xl:basis-1/5")
-          //- TODO: Also make localeSelect conditional.
-          span(v-if="navItems" class="text-xl font-semibold") Links
+        div(v-if="navItems" class="flex-grow basis-full md:basis-1/3 lg:basis-1/4 xl:basis-1/5")
+          span(class="text-xl font-semibold") Links
           UNavigationMenu(
             v-if="navItems"
             :items="navItems"
@@ -79,18 +80,18 @@ div(:class="footer({ variant })")
 
         div(v-if="tel || email || address" class="flex-grow basis-full md:basis-1/3 lg:basis-1/4 xl:basis-1/5")
           span(class="text-xl font-semibold") Contact
-          //- TODO: Refactor; should be one dl with multiple entries
-          dl(v-if="tel")
-            dt(class="font-bold") Tel
-            dd
-              a(:href="`tel:${tel}`" class="text-muted hover:text-default") {{ tel }}
-          dl(v-if="email")
-            dt(class="font-bold") Email
-            dd
-              a(:href="`mailto:${email}`" class="text-muted hover:text-default") {{ email }}
-          dl(v-if="address")
-            dt(class="font-bold") Address
-            dd(class="text-muted") {{ address }}
+          dl
+            template(v-if="tel")
+              dt(class="font-bold") Tel
+              dd
+                a(:href="`tel:${tel}`" class="text-muted hover:text-default") {{ tel }}
+            template(v-if="email")
+              dt(class="font-bold") Email
+              dd
+                a(:href="`mailto:${email}`" class="text-muted hover:text-default") {{ email }}
+            template(v-if="address")
+              dt(class="font-bold") Address
+              dd(class="text-muted") {{ address }}
 
       div(class="text-center")
 

@@ -3,8 +3,13 @@ import { tv } from 'tailwind-variants'
 
 const localePath = useLocalePath()
 
+const { locale, defaultLocale } = useI18n()
+
 const {
   site: { name },
+  content: {
+    i18n: contentI18n
+  },
   header: {
     navigation: { content: navContent, links: navLinks },
   },
@@ -21,7 +26,7 @@ const { /* color = 'neutral', */ variant = undefined } = defineProps<{
 }>()
 
 // NOTE: useAsyncData removed
-const navItems = await tntNav(navContent ? navContent : navLinks)
+const navItems = await tntNav(navContent ? navContent : navLinks, undefined, { locale: contentI18n ? (locale.value === defaultLocale ? true : locale.value) : false })
 
 const navbar = computed(() => tv({
   base: 'w-full',
