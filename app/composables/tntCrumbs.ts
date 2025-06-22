@@ -4,15 +4,22 @@ import type { BreadcrumbItem } from '@nuxt/ui'
 import _startCase from 'lodash/startCase'
 
 // @i18n
-// TODO: Should hide root "Home" on internationalised pages
 
-export const tntCrumbs = async (path: string, collection: keyof PageCollections) => {
-  const params = path.split('/').filter(item => item)
+export const tntCrumbs = async (path: string, collection: keyof PageCollections, opts?: { locale?: string | boolean}) => {
+  const params = path.split('/').filter(item => item).filter(item => item !== opts?.locale)
 
-  const home: ContentNavigationItem | undefined =
-    await queryCollectionNavigation('pages', ['icon'])
-      .where('path', '=', '/')
-      .then(n => n[0])
+  let home: ContentNavigationItem | undefined
+  if (opts?.locale && typeof opts?.locale === 'string') {
+    home =
+      await queryCollectionNavigation(`${opts.locale}_pages`, ['icon'])
+        .where('path', '=', `/${opts.locale}`)
+        .then(n => n[0])
+  } else {
+    home =
+      await queryCollectionNavigation('pages', ['icon'])
+        .where('path', '=', '/')
+        .then(n => n[0])
+  }
 
   const navItems: BreadcrumbItem[] = home
     ? [{ label: home.title, icon: home.icon as string | undefined, to: home.path }]
@@ -20,7 +27,14 @@ export const tntCrumbs = async (path: string, collection: keyof PageCollections)
 
   let navigation: ContentNavigationItem[] = await queryCollectionNavigation(collection, ['icon'])
 
-  let param = ''
+  // NOTE: This seems kind of hacky and maybe we can refactor breadcrumbs to avoid specifically doing this
+  //       but... because locale routes are in subdir spaces, the collection actually considers that subdir
+  //       the root and we need to step into it in order to begin. This is in contrast to the true index,
+  //       which is not considered a directory with children...
+  //       In fact, this information may help us fix tntNav as well, I think?
+  if (opts?.locale && typeof opts?.locale === 'string') navigation = navigation[0]?.children || []
+
+  let param = typeof opts?.locale === 'string' ? `/${opts.locale}` : ''
 
   params.forEach((p) => {
     param = `${param}/${p}`
