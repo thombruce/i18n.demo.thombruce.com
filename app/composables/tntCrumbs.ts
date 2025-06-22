@@ -5,20 +5,16 @@ import _startCase from 'lodash/startCase'
 
 // @i18n
 
-// TODO: Should treat locale index as homepage when i18n mode in use.
-
 export const tntCrumbs = async (path: string, collection: keyof PageCollections) => {
   const params = path.split('/').filter(item => item)
 
-  // TODO: Depends on a known default collection like pages.
-  //       We may want to import defaultLocale here to handle this
-  const home: ContentNavigationItem | undefined = undefined
-  // await queryCollectionNavigation('pages', ['icon'])
-  //   .where('path', '=', '/')
-  //   .then(n => n[0])
+  const home: ContentNavigationItem | undefined =
+    await queryCollectionNavigation(collection, ['icon'])
+      .where('path', '=', '/')
+      .then(n => n[0])
 
   const navItems: BreadcrumbItem[] = home
-    ? [] // [{ label: home.title, icon: home.icon as string | undefined, to: home.path }]
+    ? [{ label: home.title, icon: home.icon as string | undefined, to: home.path }]
     : [{ label: 'Home', icon: 'lucide:house', to: '/' }]
 
   let navigation: ContentNavigationItem[] = await queryCollectionNavigation(collection, ['icon'])

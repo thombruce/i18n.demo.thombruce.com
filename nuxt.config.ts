@@ -88,11 +88,12 @@ export default defineNuxtConfig({
     }
   },
   i18n: {
-    strategy: 'prefix',
+    // baseUrl: 'https://www.example.com', // TODO: Implement SEO
+    strategy: 'prefix_except_default',
     defaultLocale: 'en',
     locales: [
       { code: 'en', name: 'English', file: 'en.json' },
-      { code: 'sv', name: 'Svenska', file: 'sv.json' },
+      // { code: 'sv', name: 'Svenska', file: 'sv.json' },
     ]
   },
   // PATCH: https://github.com/nuxt/nuxt/issues/32175#issuecomment-2898200099

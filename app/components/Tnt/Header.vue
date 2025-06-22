@@ -2,6 +2,8 @@
 import type { PageCollections } from '@nuxt/content';
 import { tv } from 'tailwind-variants'
 
+const localePath = useLocalePath()
+
 const {
   site: { name },
   header: {
@@ -56,7 +58,7 @@ div(:class="navbar({ variant })")
 
       UButton(
         :label="name"
-        to="/"
+        :to="localePath('/')"
         color="neutral"
         variant="ghost"
         class="my-2 px-2.5 py-1.5 font-extrabold"
