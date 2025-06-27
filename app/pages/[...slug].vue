@@ -8,9 +8,11 @@ const { locale, defaultLocale } = useI18n()
 
 const route = useRoute()
 
-const { public: { collections } } = useRuntimeConfig()
+const { public: { collections, googleAnalytics: { id: gaID } } } = useRuntimeConfig()
 
 const { content: { i18n: contentI18n }, ui: { theme, layout: defaultLayout, pattern: backgroundPattern } } = useAppConfig()
+
+const consented = useCookie<boolean>('cookieConsent')
 
 const currentLocale = locale.value
 const currentLocaleIsDefault = currentLocale === defaultLocale
@@ -37,6 +39,13 @@ tntOgImageComponent(page?.og?.component, {
   color: page?.og?.color,
   testimonial: page?.og?.description || page?.description,
   authors: page?.authors,
+})
+
+useScriptGoogleAnalytics({
+  id: gaID || '',
+  scriptOptions: {
+    trigger: consented
+  }
 })
 </script>
 
