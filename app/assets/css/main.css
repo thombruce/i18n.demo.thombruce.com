@@ -5,9 +5,60 @@
 
 @source "../../content/**/*";
 
-/*
-@theme static {}
-*/
+@theme {
+  /* Fonts */
+  --font-sans: ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+  --font-mono: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+
+  --default-font-family: var(--font-sans);
+  --default-mono-font-family: var(--font-mono);
+
+  /* Colors */
+  --color-white: #fff;
+
+  /* Spacing & Layout */
+  --spacing: .25rem;
+
+  --container-md: 28rem;
+  --container-lg: 32rem;
+  --container-7xl: 80rem;
+
+  --aspect-video: 16/9;
+
+  /* Text Size and Font Weight */
+  --text-xs: .75rem;
+  --text-xs--line-height: 1.33333;
+  --text-sm: .875rem;
+  --text-sm--line-height: 1.42857;
+  --text-base: 1rem;
+  --text-base--line-height: 1.5;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.55556;
+  --text-xl: 1.25rem;
+  --text-xl--line-height: 1.4;
+  --text-2xl: 1.5rem;
+  --text-2xl--line-height: 1.33333;
+  --text-3xl: 1.875rem;
+  --text-3xl--line-height: 1.2;
+  --text-4xl: 2.25rem;
+  --text-4xl--line-height: 1.11111;
+  --text-9xl: 8rem;
+  --text-9xl--line-height: 1;
+
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 900;
+
+  /* Animation */
+  --ease-out: cubic-bezier(0,0,.2,1);
+  --animate-spin: spin 1s linear infinite;
+  --animate-pulse: pulse 2s cubic-bezier(.4,0,.6,1)infinite;
+
+  --default-transition-duration: .15s;
+  --default-transition-timing-function: cubic-bezier(.4,0,.2,1);
+}
 
 :root {
   /* Border Radius */

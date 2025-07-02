@@ -64,6 +64,7 @@ div(:class="navbar({ variant })")
         :to="localePath('/')"
         color="neutral"
         variant="ghost"
+        size="xl"
         class="my-2 px-2.5 py-1.5 font-extrabold"
       )/
 

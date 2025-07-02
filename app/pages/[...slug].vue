@@ -24,9 +24,6 @@ let collection = collections.includes(((contentI18n && !currentLocaleIsDefault ?
 // NOTE: useAsyncData removed
 let page = await queryCollection(collection).path(route.path).first()
 
-// NOTE: useAsyncData removed
-const navItems = await tntNav(true, collection)
-
 const layout = (page?.layout || defaultLayout || 'default') as LayoutKey
 
 definePageMeta({
@@ -50,53 +47,51 @@ useScriptGoogleAnalytics({
 </script>
 
 <template lang="pug">
-NuxtLayout(:name="layout" :theme="theme" :collection="collection")
-  template(#nav v-if="page?.nav && navItems")
-    UNavigationMenu(
-      :items="navItems"
-      orientation="vertical"
-      :unmount-on-hide="false"
-    )/
+NuxtLayout(:name="layout" :page="page" :collection="collection" :theme="theme")
 
-  template(#default)
-    TntBreadcrumbs(v-if="page?.breadcrumbs" :collection="collection")/
+  TntBreadcrumbs(v-if="page?.breadcrumbs" :collection="collection")/
 
-    UCarousel(v-if="page?.images" v-slot="{ item }" :items="page.images" :ui="{ item: 'basis-1/3' }")
-      figure(v-if="item && item.caption")
-        div(class="block aspect-video")
-          NuxtImg(:src="String(item.src)" :alt="item.alt" fit="cover" width="1200" class="w-full h-full object-cover rounded-lg")
-        figcaption {{ item.caption }}
-      div(v-else-if="item" class="block aspect-video")
+  UCarousel(v-if="page?.images" v-slot="{ item }" :items="page.images" :ui="{ item: 'basis-1/3' }")
+
+    figure(v-if="item && item.caption")
+      div(class="block aspect-video")
         NuxtImg(:src="String(item.src)" :alt="item.alt" fit="cover" width="1200" class="w-full h-full object-cover rounded-lg")
+      figcaption {{ item.caption }}
 
-    ContentRenderer(
-      v-if="page"
-      :value="page"
-      class="prose \
-            dark:prose-invert \
-            max-w-none"
-    )/
+    div(v-else-if="item" class="block aspect-video")
+      NuxtImg(:src="String(item.src)" :alt="item.alt" fit="cover" width="1200" class="w-full h-full object-cover rounded-lg")
 
-    //- TODO: Ensure that article list shows content from fallback locale
-    TntArticleList(
-      v-if="page?.list"
-      :collection="typeof page.list === 'object' && page.list.collection ? page.list.collection : collection"
-      :path=" \
-        typeof page.list === 'boolean' \
-          ? route.path \
-          : typeof page.list === 'string' \
-          ? page.list \
-          : typeof page.list === 'object' \
-          ? page.list.path \
-          : route.path \
-      "
-      :order="typeof page.list === 'object' && page.list.order ? page.list.order : undefined"
-    )
+  ContentRenderer(
+    v-if="page"
+    :value="page"
+    class="prose \
+          dark:prose-invert \
+          max-w-none"
+  )/
 
-    TntPrevNext(v-if="page?.prevnext" :collection="collection")/
+  template(v-else)
+    div(class="prose dark:prose-invert max-w-none")
+      h1 Page Not Found
+      p Oops! The content you're looking for doesn't exist.
+      NuxtLinkLocale(to="/") Go back home
 
-    TntBackground(v-if="backgroundPattern" :pattern="backgroundPattern")/
+  //- TODO: Ensure that article list shows content from fallback locale
+  TntArticleList(
+    v-if="page?.list"
+    :collection="typeof page.list === 'object' && page.list.collection ? page.list.collection : collection"
+    :path=" \
+      typeof page.list === 'boolean' \
+        ? route.path \
+        : typeof page.list === 'string' \
+        ? page.list \
+        : typeof page.list === 'object' \
+        ? page.list.path \
+        : route.path \
+    "
+    :order="typeof page.list === 'object' && page.list.order ? page.list.order : undefined"
+  )
 
-  template(#toc v-if="page?.toc && page?.body.toc?.links.length")
-    TntToc(:toc="page?.body.toc")
+  TntPrevNext(v-if="page?.prevnext" :collection="collection")/
+
+  TntBackground(v-if="backgroundPattern" :pattern="backgroundPattern")/
 </template>

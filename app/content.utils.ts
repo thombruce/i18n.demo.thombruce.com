@@ -39,10 +39,11 @@ export const global = {
 
   // TODO: Some kinda page.ui object.
   //       Probably include layout (above) in this as well.
-  nav: z.boolean().default(false),
   breadcrumbs: z.boolean().default(true),
-  toc: z.boolean().default(false),
   prevnext: z.boolean().default(true),
+  // NOTE: Presently used only by the docs layout
+  nav: z.boolean().default(true),
+  toc: z.boolean().default(true),
 
   icon: z.string().optional().editor({ input: 'icon' }),
 

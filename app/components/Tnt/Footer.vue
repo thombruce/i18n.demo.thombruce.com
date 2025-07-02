@@ -67,10 +67,10 @@ div(:class="footer({ variant })")
           span(class="text-xl font-semibold") About
           p(class="text-muted") {{ about }}
 
-        div(v-if="navItems" class="flex-grow basis-full md:basis-1/3 lg:basis-1/4 xl:basis-1/5")
+        div(v-if="navItems?.length" class="flex-grow basis-full md:basis-1/3 lg:basis-1/4 xl:basis-1/5")
           span(class="text-xl font-semibold") Links
           UNavigationMenu(
-            v-if="navItems"
+            v-if="navItems?.length"
             :items="navItems"
             :unmount-on-hide="false"
             orientation="vertical"
