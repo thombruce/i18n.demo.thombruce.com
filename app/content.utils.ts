@@ -35,7 +35,7 @@ export const global = {
 
   date: z.string().date().optional(),
 
-  layout: z.enum(['default']).optional(),
+  layout: z.enum(['default', 'docs']).optional(),
 
   // TODO: Some kinda page.ui object.
   //       Probably include layout (above) in this as well.

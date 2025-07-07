@@ -14,10 +14,25 @@ const {
     terms?: string
   }[]
 }>()
+
+// TODO: This is hacky and should be refactored when TntGrid is improved.
+const cols = computed(() => {
+  switch (cards.length) {
+    case 1:
+      return 1
+    case 2:
+      return 2
+    case 3:
+      return 3
+    case 4:
+    default:
+      return 4
+  }
+})
 </script>
 
 <template lang="pug">
-TntAlbum
-  //- NOTE: basis-[fraction] values are set a level higher than desired due to issues with margin/padding/gap.
-  TntPricingCard(v-for="card in cards" v-bind="card" class="flex-grow basis-full md:basis-1/3 lg:basis-1/4 xl:basis-1/5")
+TntGrid(:cols="cols" :items="cards")
+  template(#item="card")
+    TntPricingCard(v-bind="card")
 </template>
