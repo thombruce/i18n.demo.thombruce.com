@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { PageCollections } from '@nuxt/content'
 
-const { page, collection, theme }: { page: any, collection?: keyof PageCollections, theme?: 'solid' | 'ghost' } = useAttrs()
+const { page, collection, theme }: { page?: any, collection?: keyof PageCollections, theme?: 'solid' | 'ghost' } = useAttrs()
 
 // NOTE: useAsyncData removed
 const navItems = await tntNav(true, collection)
@@ -35,7 +35,7 @@ NuxtLayout(:theme="theme" :collection="collection")
           variant="subtle"
           trailing-icon="lucide:chevron-down"
           block
-          @click="tocOpen.value = !tocOpen.value"
+          @click="tocOpen = !tocOpen"
         )/
         template(#content)
           TntToc(:toc="page?.body.toc")

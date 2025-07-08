@@ -33,12 +33,17 @@ export const global = {
   description: z.string().optional(),
   og: og.optional(),
 
+  headline: z.string().optional(),
+
   date: z.string().date().optional(),
+
+  links: z.array(z.string()).optional(),
 
   layout: z.enum(['default', 'docs']).optional(),
 
   // TODO: Some kinda page.ui object.
   //       Probably include layout (above) in this as well.
+  header: z.boolean().default(false),
   breadcrumbs: z.boolean().default(true),
   prevnext: z.boolean().default(true),
   // NOTE: Presently used only by the docs layout
