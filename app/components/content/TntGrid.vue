@@ -25,6 +25,7 @@ const klass = computed(() => {
 
 <template lang="pug">
 div(class="grid gap-4" :class="klass")
-  div(v-for="item in items" class="")
+  div(v-for="item in items")
     slot(name="item" v-bind="item")/
+  slot/
 </template>
